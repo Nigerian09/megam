@@ -592,6 +592,7 @@ Docker Image: helloworld.app, containing the app.
 Container: Runs the app and prints “Hello world”.
 
 
+
 5. Installing docker client in windows and bridging 2 containers:
 
 - install docker from docker docs website
@@ -797,3 +798,52 @@ EC2 Instances: Two t2.micro instances (WebServer1, WebServer2) with Apache servi
 Application Load Balancer: WebALB balancing HTTP traffic across both instances.
 Classic Load Balancer: WebCLB doing the same, with cross-zone balancing enabled.
 Traffic Distribution: Both ALB and CLB evenly distribute traffic (round-robin).
+
+
+
+7. Load balancing:
+Create two instances (ubuntu)
+open cmd
+cd pemfile location
+ssh -i pemfie ubuntu@ip
+sudo -i
+apt update
+apt install apache2 -y
+sudo systemctl start apache2
+sudo systemctl enable apache2
+echo "<h1>Your message </h1>" > /var/www/html/index.html
+search ip in url
+// Do same steps for second instance 
+open EC2 -> Load balancer -> create classic load balancer 
+copy the dns and put it in url
+
+
+
+
+8. Docker build mount to create volumes using jenkins :
+
+docker -v  
+docker volume --help  (display docker volume cmd)  
+docker volume create myvolume1  
+docker volume ls  
+docker volume inspect myvolume1    
+docker pull jenkins/jenkins:lts-jdk17  
+docker run  --name myjenkins -v myvolume1:/var/jenkins_home -p 8080:8080 -p 50000:50000 jenkins/jenkins:lts  
+   
+   (run) initial password (copy)  
+Local host 8080 put the password
+Plugins install select none and skip
+Start using jenkins
+Create new job
+Name it as testjob
+Config build shell - ls
+Follow the same steps to create another volume 
+Give its port number 9090:8080 60000:50000
+Local host 9090
+Give admin and password
+The testjob will be shown in port 9090
+Volume is shared through ports
+// build mount is used to give our oun address to store the volume
+
+docker run  --name myjenkins -v users/Mirdul s/Desktop/var/jenkins_home -p 8080:8080 -p 50000:50000 jenkins/jenkins:lts  
+Folder will be created in desktop
